@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- This is a lab demonstration of postMessage XSS for https://cybr.com's
+    Cross-Site Scripting (XSS): The 2021 Guide -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>window_b</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    // pretend that there's logic pulling data from
+    // data storage and crunching numbers (instead of being hardcoded)
+    var message = {
+      "userID": "34",
+      "userFName": "Christophe",
+      "notificationCount": "8"
+    };
+
+    // if (event.origin !== 'https://cybr.com') return; <- disabled origin check
+    parent.postMessage(message, "*"); // this gets sent back to the origin (parent) window
+  </script>
+</body>
+
+</html>
