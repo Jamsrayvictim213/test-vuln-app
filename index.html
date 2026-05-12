@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- This is a lab demonstration of postMessage XSS for https://cybr.com's
+    Cross-Site Scripting (XSS): The 2021 Guide -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>window_a</title>
+</head>
+
+<body>
+  <h2 id="name">Welcome back</h2>
+  <h3 id="notifications"></h3>
+  <iframe id="notifs-iframe" src="http://cybr-lab-postmessage-xss-notifs.s3-website-us-east-1.amazonaws.com/window_b.html" style="display:none;"></iframe>
+  <script type="text/javascript">
+    var userFName = document.getElementById('name');
+    var notifications = document.getElementById('notifications');
+
+    // listen for messages
+    window.addEventListener('message', function(event) {
+       // if(event.origin !== 'https://some-domain.com') return; <- disabled origin check
+      console.log('received response:  ' + JSON.stringify(event.data));
+      userFName.innerHTML = "Welcome back, " + event.data.userFName;
+      notifications.innerHTML = "You have " + event.data.notificationCount + " notifications";
+    }, false);
+  </script>
+</body>
+
+</html>
